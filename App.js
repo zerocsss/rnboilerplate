@@ -24,6 +24,10 @@ import {
 
 import Navigation from './src/navigation';
 
+const config = {
+  isTab: true
+}
+
 const App = () => {
 
   useEffect(() => {
@@ -61,7 +65,7 @@ const App = () => {
     };
   }, []);
 
-  return <Navigation></Navigation>
+  return <Navigation config={config}></Navigation>
 };
 
 export default App;

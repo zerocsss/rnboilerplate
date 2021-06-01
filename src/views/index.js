@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'react-native-elements';
+import {Button1 as Button} from '../ui';
 import {
   SafeAreaView,
   ScrollView,

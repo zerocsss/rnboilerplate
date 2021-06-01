@@ -23,9 +23,14 @@ import {
 } from '@react-native-hero/umeng-push';
 
 import Navigation from './src/navigation';
+// import {HomeScreen} from './src/navigation/configs';
 
 const config = {
-  isTab: true
+  isTab: true,
+  // pages: [
+  //   {name: 'HomeScreen', component: HomeScreen}
+  // ],
+  
 }
 
 const App = () => {

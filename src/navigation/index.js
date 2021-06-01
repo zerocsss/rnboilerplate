@@ -19,7 +19,13 @@ function Navigation({config}) {
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          {
+            config.pages.map((item, index) => {
+              return (
+                <Stack.Screen name={item.name} component={item.component} />
+              )
+            })
+          }
         </Stack.Navigator>
       )}
 

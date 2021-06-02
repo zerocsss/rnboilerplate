@@ -1,41 +1,23 @@
 import axios from 'axios';
 import qs from 'querystring';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import Toast from 'react-native-root-toast';
-import { getAppMetaData } from 'react-native-get-channel';
-import { getVersion } from 'react-native-device-info';
+import {getAppMetaData} from 'react-native-get-channel';
+import {getVersion} from 'react-native-device-info';
 // import CookieManager from '@react-native-community/cookies';
-import { storeData, getData } from './AsyncStorage';
-import { api, shop_api } from 'config';
+import {storeData, getData} from './AsyncStorage';
+import {api, shop_api} from 'config';
 
-axios.defaults.timeout = 50000
+axios.defaults.timeout = 50000;
 axios.interceptors.request.use(
   async config => {
     // 在发送请求之前做些什么
-    const { url } = config;
-    // console.log('--=-===', config)
-    if (url.indexOf('sign_in') < 0) {
-      let token = await getData('rrs_token');
-      // 商城接口鉴权token
-      // delete config.headers["X-Spree-Order-Token"]
-      if (url.indexOf('ohio-store-dev') > -1) {
-        token = await getData('store_token');
-      }
-      let channel = Platform.OS === 'android' ? await getAppMetaData('UMENG_CHANNEL') : 'ios_release'; //ios_fir ios_beta
-      config.headers.common.Authorization = token;
-      config.headers.common.version = getVersion();
-      config.headers.common.app_name = 'whs';
-      config.headers.common.appchannel = channel;
-
-      if (url.indexOf('buyNow') > -1) {
-        let orderToken = await getData('orderToken');
-        config.headers.common["X-Spree-Order-Token"] = orderToken;
-      }
-      // CookieManager.get('changs').then(res => {
-      //   console.log('http cookie =>', res);
-      //   config.headers.common.Authorization = res.name.value;
-      // });
-    }
+    // const {url} = config;
+    let token = await getData('xxx');
+    config.headers.common.Authorization = token;
+    config.headers.common.version = getVersion();
+    config.headers.common.app_name = 'xxx';
+    config.headers.common.appchannel = channel;
     return config;
   },
   function (error) {
@@ -49,23 +31,22 @@ axios.interceptors.response.use(
     return response;
   },
   async function (error) {
-    console.log(error)
     if (error.code === 'ECONNABORTED') {
-      Toast.show('我会瘦：似乎出了点问题~', {
-        containerStyle: {
-          backgroundColor: "#fff"
-        },
-        textStyle: {
-          fontSize: 12
-        },
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-        textColor: '#333',
-        shadow: false,
-        animation: true,
-        hideOnPress: true,
-        delay: 0,
-      });
+      // Toast.show('似乎出了点问题~', {
+      //   containerStyle: {
+      //     backgroundColor: '#fff',
+      //   },
+      //   textStyle: {
+      //     fontSize: 12,
+      //   },
+      //   duration: Toast.durations.LONG,
+      //   position: Toast.positions.BOTTOM,
+      //   textColor: '#333',
+      //   shadow: false,
+      //   animation: true,
+      //   hideOnPress: true,
+      //   delay: 0,
+      // });
       // axios.request(originalRequest) // 重新发起请求
       // let currentErrs = await getData('errRequest') || []
       // if (currentErrs.length !== 0 ) {
@@ -111,7 +92,7 @@ axios.interceptors.response.use(
         }
         break;
       case 1002:
-        const retryOriginalRequest = new Promise((resolve) => {
+        const retryOriginalRequest = new Promise(resolve => {
           // addSubscriber(() => {
           //   resolve(request(url, options))
           // })
@@ -127,14 +108,16 @@ axios.interceptors.response.use(
 let host = api;
 
 export default class httpUtil {
-
-
   static get(url, params, isShop) {
     return new Promise(async (resolve, reject) => {
       try {
         let query = await qs.stringify(params);
         let res = null;
-        if (isShop) {host = shop_api} else { host = api }
+        if (isShop) {
+          host = shop_api;
+        } else {
+          host = api;
+        }
         if (!params) {
           res = await axios.get(host + url);
         } else {
@@ -152,7 +135,11 @@ export default class httpUtil {
   static post(url, params, isShop) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (isShop) {host = shop_api} else { host = api }
+        if (isShop) {
+          host = shop_api;
+        } else {
+          host = api;
+        }
         let res = await axios.post(host + url, params);
         resolve(res);
       } catch (error) {
@@ -164,7 +151,11 @@ export default class httpUtil {
   static put(url, params, isShop) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (isShop) {host = shop_api} else { host = api }
+        if (isShop) {
+          host = shop_api;
+        } else {
+          host = api;
+        }
         let res = await axios.put(host + url, params);
         resolve(res);
       } catch (error) {
@@ -178,11 +169,16 @@ export default class httpUtil {
   static delete(url, params, isShop) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (isShop) {host = shop_api} else { host = api }
+        if (isShop) {
+          host = shop_api;
+        } else {
+          host = api;
+        }
         let res = await axios.delete(host + url, {
-          params: params, paramsSerializer: params => {
-            return qs.stringify(params, { arrayFormat: 'brackets' })
-          }
+          params: params,
+          paramsSerializer: params => {
+            return qs.stringify(params, {arrayFormat: 'brackets'});
+          },
         });
         resolve(res);
       } catch (error) {
@@ -196,7 +192,11 @@ export default class httpUtil {
   static patch(url, params, isShop) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (isShop) {host = shop_api} else { host = api }
+        if (isShop) {
+          host = shop_api;
+        } else {
+          host = api;
+        }
         let res = await axios.patch(host + url, params);
         resolve(res);
       } catch (error) {
